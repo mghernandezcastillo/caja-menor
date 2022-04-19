@@ -1,0 +1,8 @@
+from django.db import models
+
+class TipoServicio(models.Model):
+
+    nombre = models.CharField('Tipo Equipo',max_length= 50, primary_key=True)
+
+    def __str__(self):
+        return self.nombre

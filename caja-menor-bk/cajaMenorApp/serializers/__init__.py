@@ -1,2 +1,4 @@
 from .userSerializer import UserSerializer
 from .cajaMenorSerializaer import CajaMenorSerializer
+from .tipoServicioSerializer import TipoServicioSerializer
+from .reporteSerializer import ReporteSerializer

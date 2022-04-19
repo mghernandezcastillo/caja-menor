@@ -35,5 +35,13 @@ urlpatterns = [
     path('cajaMenor/<int:user>/<int:pk>/delete', views.CajaMenorDeleteView.as_view()),
     
 
+    #URLS de tipo de servicio
+    path('tipoServicio/<int:user>', views.TipoServicioCreateView.as_view()),
+    path('tipoServicio/<int:user>/list', views.TipoServicioListView.as_view()),
+
+    #URLS de reporte
+    path('reporte/<int:user>', views.ReporteCreateView.as_view()),
+    path('reporte/<int:user>/list', views.ReporteListView.as_view()),
+
 ]
 
