@@ -117,3 +117,20 @@ class CajaMenorDeleteView(generics.DestroyAPIView):
             stringResponse = {'detail':'Unauthorized Request'}
             return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
         return super().delete(request, *args, **kwargs)
+
+
+class CajaMenorByUserView(generics.ListAPIView):
+    serializer_class   = CajaMenorSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        token        = self.request.META.get('HTTP_AUTHORIZATION')[7:]
+        tokenBackend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
+        valid_data   = tokenBackend.decode(token,verify=False)
+        
+        if valid_data['user_id'] != self.kwargs['user']:
+            stringResponse = {'detail':'Unauthorized Request'}
+            return Response(stringResponse, status=status.HTTP_401_UNAUTHORIZED)
+        
+        queryset = CajaMenor.objects.filter(user=self.kwargs['user'])
+        return queryset

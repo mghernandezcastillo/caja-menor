@@ -87,7 +87,6 @@ export default {
       /* alert("Autenticación Exitosa"); */
       this.verifyAuth();
       this.getUserData();
-      this.getCajasMenores();
     },
     completedSignUp: function (data) {
       alert("Registro Exitoso");
@@ -125,30 +124,6 @@ export default {
           localStorage.setItem("isAdmin", response.data.is_admin);
           localStorage.setItem("name", response.data.name);
           this.name = response.data.name;
-        })
-        .catch((error) => {});
-    },
-
-    getCajasMenores: async function () {
-      if (
-        localStorage.getItem("token_access") === null ||
-        localStorage.getItem("token_refresh") === null
-      ) {
-        return;
-      }
-      await this.verifyToken(); // esto se utiliza para esperar a que la sección de comprobación y actualización delaccess token terminen, y que solo cuando hayan terminado
-
-      let token = localStorage.getItem("token_access");
-      let userId = jwt_decode(token).user_id.toString();
-
-      axios
-        .get(`https://caja-menor-bk.herokuapp.com/cajaMenor/${userId}/list`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          localStorage.setItem("cajasMenores", JSON.stringify(response.data));
         })
         .catch((error) => {});
     },
