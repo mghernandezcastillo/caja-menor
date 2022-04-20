@@ -120,6 +120,7 @@
 </template>
 <script>
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 export default {
   name: "SignUp",
   data: function () {
@@ -129,6 +130,9 @@ export default {
         password: "",
         name: "",
         is_admin: false,
+      },
+      cajaMenor: {
+        user: "",
       },
       error_message: "",
       error_signup: false,
@@ -155,6 +159,9 @@ export default {
             token_access: result.data.access,
             token_refresh: result.data.refresh,
           };
+          let token = result.data.access;
+          let userId = jwt_decode(token).user_id;
+          this.processCreateCajaMenor(userId);
           this.startLoader = false;
           this.$emit("completedSignUp", dataSignUp);
         })
@@ -174,6 +181,67 @@ export default {
             this.error_signup = true;
           }
           this.startLoader = false;
+        });
+    },
+
+    processCreateCajaMenor: async function (userIdCreated) {
+      this.cajaMenor.user = userIdCreated;
+      console.log(this.cajaMenor);
+      this.startLoader = true;
+      if (
+        localStorage.getItem("token_access") === null ||
+        localStorage.getItem("token_refresh") === null
+      ) {
+        this.$emit("logOut");
+        return;
+      }
+      await this.verifyToken(); // esto se utiliza para esperar a que la sección de comprobación y actualización delaccess token terminen, y que solo cuando hayan terminado
+
+      let token = localStorage.getItem("token_access");
+      let userId = jwt_decode(token).user_id.toString();
+      axios
+        .post(
+          `https://caja-menor-bk.herokuapp.com/cajaMenor/${userId}`,
+          this.cajaMenor,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.startLoader = false;
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status == "401") {
+            this.error_message = "Error en el servidor";
+            this.error_createequipo = true;
+          } else if (error.response.status == "400") {
+            this.error_message = "Error en el servidor";
+            this.error_createequipo = true;
+          } else if (error.response.status == "500") {
+            this.error_message = "Error en el servidor";
+            this.error_createequipo = true;
+          } else {
+            this.error_message = "Error en el servidor";
+            this.error_createequipo = true;
+          }
+          this.startLoader = false;
+        });
+    },
+    verifyToken: function () {
+      return axios
+        .post(
+          "https://caja-menor-bk.herokuapp.com/refresh",
+          { refresh: localStorage.getItem("token_refresh") },
+          { headers: {} }
+        )
+        .then((result) => {
+          localStorage.setItem("token_access", result.data.access);
+        })
+        .catch(() => {
+          this.$emit("logOut");
         });
     },
   },

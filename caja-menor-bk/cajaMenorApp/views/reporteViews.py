@@ -30,14 +30,19 @@ class ReporteCreateView(generics.CreateAPIView):
 
             # Update caja menor
             reporte_data = validated_data
-            print(reporte_data)
             caja_id = reporte_data['caja_menor'].id
             valor = reporte_data['valor']
-
+            tipoServicio = reporte_data['tipoServicio']
+            tipoServicio = str(tipoServicio)
             caja_menor = CajaMenor.objects.get(id=caja_id)
-            caja_menor.gastos = caja_menor.gastos + valor
-            caja_menor.saldo = caja_menor.saldo - valor
-            caja_menor.save()
+            print(caja_id)
+            if tipoServicio == 'GASTO':
+                caja_menor.gastos = caja_menor.gastos + valor
+                caja_menor.saldo = caja_menor.saldo - valor
+                caja_menor.save()
+            elif tipoServicio == 'INGRESO':
+                caja_menor.saldo = caja_menor.saldo + valor
+                caja_menor.save()
 
             
 

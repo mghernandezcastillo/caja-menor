@@ -26,6 +26,7 @@ urlpatterns = [
 
     #URLS de usuario
     path('user/<int:pk>', views.UserDetailView.as_view()),
+    path('user/<int:pk>/list', views.UserListView.as_view()),
 
     #URLS de caja menor
     path('cajaMenor/<int:user>', views.CajaMenorCreateView.as_view()),

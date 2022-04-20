@@ -1,3 +1,5 @@
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 <template>
   <div class="home">
     <div class="home-data">
@@ -15,24 +17,23 @@
       </div>
 
       <div class="input-group-home">
-        <button v-on:click="loadSelectedOption('history')" class="btn-home-2">
+        <button v-on:click="loadHistorial()" class="btn-home-2">
           Historial reportes
         </button>
-      </div>
-      <div class="crear_equipo_container">
-        <a v-on:click="loadCreateEquipo">Crear nuevo equipo</a>
       </div>
     </div>
   </div>
 </template>
 <script>
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 export default {
   name: "Home",
   data: function () {
     return {
       email: localStorage.getItem("email") || "none",
       is_admin: false,
-      name: localStorage.getItem("name") || "none",
+      name: "",
     };
   },
 
@@ -46,9 +47,28 @@ export default {
     loadCreateReport: function () {
       this.$router.push("createReport");
     },
+    loadHistorial: function () {
+      this.$router.push("historialGeneral");
+    },
+
+    verifyToken: function () {
+      return axios
+        .post(
+          "https://caja-menor-bk.herokuapp.com/refresh",
+          { refresh: localStorage.getItem("token_refresh") },
+          { headers: {} }
+        )
+        .then((result) => {
+          localStorage.setItem("token_access", result.data.access);
+        })
+        .catch(() => {
+          this.$emit("logOut");
+        });
+    },
   },
   created: function () {
     this.verifyAuth();
+    this.name = localStorage.getItem("name") || "";
     this.is_admin = JSON.parse(localStorage.getItem("isAdmin")) || false;
   },
 };

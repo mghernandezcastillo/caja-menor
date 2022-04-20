@@ -4,6 +4,8 @@ import LogIn from "./components/LogIn.vue";
 import SignUp from "./components/SignUp.vue";
 import Home from "./components/Home.vue";
 import CreateReport from "./components/CreateReport.vue";
+import HistorialGeneral from "./components/HistorialGeneral.vue";
+import HistorialGeneralAdmin from "./components/HistorialGeneralAdmin.vue";
 const routes = [
   {
     path: "/",
@@ -29,6 +31,16 @@ const routes = [
     path: "/createReport",
     name: "createReport",
     component: CreateReport,
+  },
+  {
+    path: "/historialGeneral",
+    name: "historialGeneral",
+    component: HistorialGeneral,
+  },
+  {
+    path: "/historialGeneralAdmin",
+    name: "historialGeneralAdmin",
+    component: HistorialGeneralAdmin,
   },
 ];
 const router = createRouter({

@@ -10,10 +10,12 @@ import axios from 'axios';
         <button v-if="is_auth && is_admin" v-on:click="loadSignUp">
           Nuevo Usuario
         </button>
-        <!--         
-          <button v-if="is_auth && is_admin" v-on:click="loadPortalAdmin">
+        <button
+          v-if="is_auth && is_admin"
+          v-on:click="loadHistorialGeneralAdmin"
+        >
           Admin
-        </button> -->
+        </button>
       </nav>
     </div>
 
@@ -60,12 +62,12 @@ export default {
   methods: {
     // metodos que definen el comportamiento que tendrá la aplicación
     verifyAuth: function () {
-      this.getUserData();
+      console.log("verificando auth");
       this.is_auth = localStorage.getItem("isAuth") || false;
       if (this.is_auth == false) {
         this.$router.push({ name: "logIn" });
       } else {
-        this.$router.push({ name: "home" });
+        this.getUserData();
       }
     },
 
@@ -78,6 +80,9 @@ export default {
     loadSignUp: function () {
       this.$router.push({ name: "signUp" });
     },
+    loadHistorialGeneralAdmin: function () {
+      this.$router.push({ name: "historialGeneralAdmin" });
+    },
 
     completedLogIn: function (data) {
       localStorage.setItem("isAuth", true);
@@ -86,16 +91,12 @@ export default {
       localStorage.setItem("token_refresh", data.token_refresh);
       /* alert("Autenticación Exitosa"); */
       this.verifyAuth();
-      this.getUserData();
     },
     completedSignUp: function (data) {
       alert("Registro Exitoso");
       this.completedLogIn(data);
     },
 
-    loadHome: function () {
-      this.$router.push({ name: "home" });
-    },
     logOut: function () {
       localStorage.clear();
       this.verifyAuth();
@@ -122,8 +123,9 @@ export default {
         .then((response) => {
           this.is_admin = response.data.is_admin;
           localStorage.setItem("isAdmin", response.data.is_admin);
-          localStorage.setItem("name", response.data.name);
           this.name = response.data.name;
+          localStorage.setItem("name", response.data.name);
+          this.loadHome();
         })
         .catch((error) => {});
     },

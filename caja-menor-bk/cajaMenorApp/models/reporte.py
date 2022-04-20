@@ -14,7 +14,7 @@ class Reporte(models.Model):
     nombre_usuario = models.CharField('Nombre Usuario',max_length= 50)
     detalle = models.TextField('Observacion',max_length= 500)
     valor = models.IntegerField('Valor',default=0)
-    evidence = models.ImageField(upload_to='firmas', null=True)
+    evidence = models.ImageField(upload_to='firmas', null=True , blank=True)
 
 
     def __str__(self):

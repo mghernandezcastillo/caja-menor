@@ -46,7 +46,7 @@
         }}</span>
       </div>
       <button type="submit" class="login__submit">Iniciar Sesión</button>
-      <a href="#" class="login__link">¿Olvidaste tu contraseña?</a>
+      <!--<a href="#" class="login__link">¿Olvidaste tu contraseña?</a>-->
     </form>
 
     <!-- ANIMATED BACKGROUND -->
