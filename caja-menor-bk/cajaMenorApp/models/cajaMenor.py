@@ -10,4 +10,4 @@ class CajaMenor(models.Model):
     saldo = models.IntegerField(default=0)
 
     def __str__(self):
-        return str(self.id) + ' ' + self.user.name + ' ' + str(self.gastos) + ' ' + str(self.saldo)
+        return str(self.id) + ' ' + self.user.name + ' ' + self.user.id + ' ' + str(self.gastos) + ' ' + str(self.saldo)

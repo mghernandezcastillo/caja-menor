@@ -11,6 +11,7 @@ class CajaMenorSerializer(serializers.ModelSerializer):
         return {
             'id': cajaMenor.id,
             'user': cajaMenor.user.name,
+            'userId': cajaMenor.user.id,
             'gastos': cajaMenor.gastos,
             'saldo': cajaMenor.saldo
         }

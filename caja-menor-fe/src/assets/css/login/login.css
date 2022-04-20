@@ -1,0 +1,15 @@
+.login {
+  background: #01afbc;
+  background: linear-gradient(135deg, #01afbc 0%, #007bbd 100%);
+  background: linear-gradient(to top right, #01afbc 0%, #007bbd 100%);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: auto;
+  overflow: hidden;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
